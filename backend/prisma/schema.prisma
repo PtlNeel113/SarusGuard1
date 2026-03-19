@@ -1,0 +1,166 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(CITIZEN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  birdSightings      BirdSighting[]
+  pollutionReports   PollutionReport[]
+  
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  CITIZEN
+  RESEARCHER
+}
+
+model Wetland {
+  id              String   @id @default(uuid())
+  name            String
+  district        String
+  latitude        Float
+  longitude       Float
+  areaSqKm        Float
+  waterLevel      Float?
+  vegetationIndex Float?
+  healthScore     Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  encroachmentAlerts    EncroachmentAlert[]
+  healthAnalytics       HealthAnalytics[]
+  wetlandDetections     WetlandDetection[]
+  dryingRiskPredictions DryingRiskPrediction[]
+  
+  @@map("wetlands")
+}
+
+model BirdSighting {
+  id         String   @id @default(uuid())
+  species    String
+  imageUrl   String?
+  latitude   Float
+  longitude  Float
+  reportedBy String
+  date       DateTime @default(now())
+  verified   Boolean  @default(false)
+  confidence Float?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [reportedBy], references: [id])
+  
+  @@map("bird_sightings")
+}
+
+model PollutionReport {
+  id            String         @id @default(uuid())
+  imageUrl      String?
+  pollutionType PollutionType
+  description   String
+  latitude      Float
+  longitude     Float
+  reportedBy    String
+  status        ReportStatus   @default(PENDING)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  user User @relation(fields: [reportedBy], references: [id])
+  
+  @@map("pollution_reports")
+}
+
+enum PollutionType {
+  WATER
+  AIR
+  SOIL
+  WASTE
+  CHEMICAL
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model EncroachmentAlert {
+  id               String   @id @default(uuid())
+  wetlandId        String
+  satelliteBefore  String
+  satelliteAfter   String
+  changePercentage Float
+  detectedAt       DateTime @default(now())
+  status           AlertStatus @default(ACTIVE)
+  
+  wetland Wetland @relation(fields: [wetlandId], references: [id])
+  
+  @@map("encroachment_alerts")
+}
+
+enum AlertStatus {
+  ACTIVE
+  RESOLVED
+  INVESTIGATING
+}
+
+model HealthAnalytics {
+  id                    String   @id @default(uuid())
+  wetlandId             String
+  waterIndex            Float
+  birdPopulationIndex   Float
+  pollutionIndex        Float
+  vegetationIndex       Float
+  healthScore           Float
+  date                  DateTime @default(now())
+  
+  wetland Wetland @relation(fields: [wetlandId], references: [id])
+  
+  @@map("health_analytics")
+}
+
+
+model WetlandDetection {
+  id                String   @id @default(uuid())
+  wetlandId         String
+  wetlandAreaKm2    Float
+  previousAreaKm2   Float?
+  changePercentage  Float?
+  waterMaskUrl      String?
+  analysisDate      DateTime
+  createdAt         DateTime @default(now())
+  
+  wetland Wetland @relation(fields: [wetlandId], references: [id])
+  
+  @@map("wetland_detections")
+}
+
+model DryingRiskPrediction {
+  id                String   @id @default(uuid())
+  wetlandId         String
+  riskScore         Float
+  riskCategory      String
+  recommendation    String
+  features          Json?
+  analysisDate      DateTime
+  createdAt         DateTime @default(now())
+  
+  wetland Wetland @relation(fields: [wetlandId], references: [id])
+  
+  @@map("drying_risk_predictions")
+}
