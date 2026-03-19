@@ -17,48 +17,48 @@ interface WetlandMarker {
     mapY: number;
 }
 
-// Wetland locations in Anand district with approximate positions on the map image
-// The map shows: Khambhat (left), Petlad (center), Anand (top-right), Borsad (bottom-right)
+// Wetland locations in Anand district with positions calibrated to the actual map image
+// Map layout: Khambhat (left), Petlad (center), Anand (upper-center), Borsad (right-center), Dakor (top-right)
 const wetlands: WetlandMarker[] = [
     {
         id: "1", name: "Pariej Lake", lat: 22.567, lng: 72.683,
         type: "Lake", healthScore: 82, area: "3.2 km²", birds: 120,
-        mapX: 28, mapY: 62  // Near Khambhat area (southwest)
+        mapX: 40, mapY: 72  // Below Khambhat, near Kanewal area
     },
     {
         id: "2", name: "Kanewal Lake", lat: 22.617, lng: 72.750,
         type: "Lake", healthScore: 75, area: "2.8 km²", birds: 95,
-        mapX: 18, mapY: 35  // Northwest of Khambhat
+        mapX: 48, mapY: 68  // Near Kanewal label on map
     },
     {
         id: "3", name: "Dakor Wetland", lat: 22.750, lng: 73.150,
         type: "Wetland", healthScore: 68, area: "1.5 km²", birds: 45,
-        mapX: 82, mapY: 18  // Top-right (near Anand/OD area)
+        mapX: 72, mapY: 18  // Top-right area near Dakor
     },
     {
         id: "4", name: "Anand Village Pond", lat: 22.570, lng: 72.960,
         type: "Pond", healthScore: 55, area: "0.3 km²", birds: 18,
-        mapX: 62, mapY: 28  // Near Anand town
+        mapX: 52, mapY: 38  // Near Anand town center
     },
     {
         id: "5", name: "Borsad Wetland", lat: 22.410, lng: 72.890,
         type: "Wetland", healthScore: 72, area: "1.1 km²", birds: 35,
-        mapX: 62, mapY: 72  // Borsad area (bottom-right)
+        mapX: 62, mapY: 62  // Borsad area (right-center-lower)
     },
     {
         id: "6", name: "Petlad Lake", lat: 22.470, lng: 72.800,
         type: "Lake", healthScore: 61, area: "0.8 km²", birds: 28,
-        mapX: 42, mapY: 48  // Center - Petlad area
+        mapX: 50, mapY: 48  // Center - Petlad area
     },
     {
         id: "7", name: "Khambhat Wetland", lat: 22.317, lng: 72.617,
         type: "Wetland", healthScore: 58, area: "1.8 km²", birds: 42,
-        mapX: 22, mapY: 82  // Bottom-left - Khambhat city area
+        mapX: 35, mapY: 55  // Khambhat town area (left-center)
     },
     {
         id: "8", name: "Sarsa Lake", lat: 22.650, lng: 73.050,
         type: "Lake", healthScore: 77, area: "0.6 km²", birds: 55,
-        mapX: 72, mapY: 32  // Near Sarsa in Anand taluka
+        mapX: 65, mapY: 30  // Near Sarsa in Anand taluka (right of center)
     },
 ];
 
@@ -77,18 +77,18 @@ export default function MapView({ height = "500px", showSidebar = true }: MapVie
                 className="flex-1 rounded-2xl overflow-hidden border border-gray-700 relative bg-[#0F172A]"
                 style={{ height }}
             >
-                {/* Anand District Map Image */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                {/* Anand District Map Image - fills entire container */}
+                <div className="absolute inset-0">
                     <img
                         src="/anand-map.png"
                         alt="Anand District Map"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-cover"
                         draggable={false}
                     />
                 </div>
 
                 {/* Dark overlay for better marker visibility */}
-                <div className="absolute inset-0 bg-[#0F172A]/20 pointer-events-none" />
+                <div className="absolute inset-0 bg-[#0F172A]/15 pointer-events-none" />
 
                 {/* Map Title */}
                 <div className="absolute top-4 left-4 z-20 bg-[#0F172A]/90 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg border border-gray-700">
