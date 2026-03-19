@@ -13,6 +13,7 @@ import {
     FileText,
 } from "lucide-react";
 import { HealthTrendChart, PollutionChart, BirdPopulationChart } from "@/components/chart-analytics";
+import { exportDashboardReport } from "@/lib/export-report";
 
 const statCards = [
     { label: "Total Wetlands", value: "120", change: "+5", trend: "up", icon: Waves, color: "from-blue-500 to-blue-600" },
@@ -41,7 +42,10 @@ export default function DashboardOverview() {
                         Welcome back! Here&apos;s what&apos;s happening with your wetlands.
                     </p>
                 </div>
-                <button className="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-dark rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 flex items-center gap-2">
+                <button
+                    onClick={() => exportDashboardReport()}
+                    className="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-dark rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+                >
                     <FileText className="w-4 h-4" />
                     Export Report
                 </button>

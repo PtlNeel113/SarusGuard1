@@ -3,7 +3,7 @@ module.exports = [
 
 __turbopack_context__.v((parentImport) => {
     return Promise.all([
-  "chunks/0e42d_c98afc2a._.js",
+  "chunks/72a30_c98afc2a._.js",
   "chunks/[root-of-the-server]__dab9e23c._.js"
 ].map((chunk) => __turbopack_context__.l(chunk))).then(() => {
         return parentImport("[turbopack-node]/transforms/postcss.ts { CONFIG => \"[project]/SarusGuard/postcss.config.mjs [postcss] (ecmascript)\" } [postcss] (ecmascript)");

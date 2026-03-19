@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AIChatWidget from "@/components/ai-chat-widget";
 import {
     Leaf,
     LayoutDashboard,
@@ -140,6 +141,9 @@ export default function DashboardLayout({
                 {/* Page Content */}
                 <main className="flex-1 p-4 lg:p-8 overflow-y-auto">{children}</main>
             </div>
+
+            {/* AI Chat Widget */}
+            <AIChatWidget />
         </div>
     );
 }
