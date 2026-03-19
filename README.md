@@ -82,29 +82,6 @@ SarusGuard/
 ├── .env
 ├── package.json
 └── README.md
-📊 Market Opportunity
-
-Most teams ignore this — judges don’t.
-
-🌍 50+ countries need monitoring
-
-📈 35% CAGR (environmental tech)
-
-🎯 Target users:
-
-Governments
-
-NGOs
-
-Researchers
-
-Revenue Model
-
-Government SaaS subscriptions
-
-NGO contracts
-
-Environmental analytics API
 
 🚀 Getting Started
 1. Clone Repo
