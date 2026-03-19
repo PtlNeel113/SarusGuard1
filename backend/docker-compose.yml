@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_USER: sarusguard
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sarusguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sarusguard-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sarusguard-network
+
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://sarusguard:password@postgres:5432/sarusguard
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your_secret_key
+      AI_SERVICE_URL: http://ai-service:5000
+      NODE_ENV: production
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - sarusguard-network
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      BACKEND_URL: http://backend:3000
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      GEE_SERVICE_ACCOUNT: ${GEE_SERVICE_ACCOUNT}
+      GEE_PRIVATE_KEY_FILE: ${GEE_PRIVATE_KEY_FILE}
+    depends_on:
+      - redis
+    volumes:
+      - ./ai-service/models:/app/models
+    networks:
+      - sarusguard-network
+
+networks:
+  sarusguard-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
