@@ -1,0 +1,9 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/birds/page": "app/dashboard/birds/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/pollution/page": "app/dashboard/pollution/page.js",
+  "/dashboard/wetlands/page": "app/dashboard/wetlands/page.js",
+  "/page": "app/page.js",
+  "/wetland-monitoring/page": "app/wetland-monitoring/page.js"
+}
